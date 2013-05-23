@@ -489,11 +489,17 @@ static NSMutableDictionary *dropDowns = nil;
     
     UITableViewCell *cell = nil;
     if (iPath.row == 0) {
-        cell = [self.delegate dropDown:self rootCellAtGlobalIndexPath:globalIndexPath];
-        
+        id <VPPDropDownDelegate> o = self.delegate;
+        if ([o respondsToSelector:@selector(dropDown:rootCellAtGlobalIndexPath:)]) {
+            cell = [o dropDown:self rootCellAtGlobalIndexPath:globalIndexPath];
+        }
+
     }
     else {
-        cell = [self.delegate dropDown:self cellForElement:(VPPDropDownElement *) [self.elements objectAtIndex:iPath.row - 1] atGlobalIndexPath:globalIndexPath];
+        id <VPPDropDownDelegate> o = self.delegate;
+        if ([o respondsToSelector:@selector(dropDown:cellForElement:atGlobalIndexPath:)]) {
+            cell = [o dropDown:self cellForElement:(VPPDropDownElement *) [self.elements objectAtIndex:iPath.row - 1] atGlobalIndexPath:globalIndexPath];
+        }
     }
     
     // if user doesn't return a customized cell, we'll create a basic one
@@ -861,11 +867,17 @@ static NSMutableDictionary *dropDowns = nil;
     
     UITableViewCell *cell = nil;
     if (iPath.row == 0) {
-        cell = [self.delegate dropDown:self rootCellAtGlobalIndexPath:globalIndexPath];
-        
+        id <VPPDropDownDelegate> o = self.delegate;
+        if ([o respondsToSelector:@selector(dropDown:rootCellAtGlobalIndexPath:)]) {
+            cell = [o dropDown:self rootCellAtGlobalIndexPath:globalIndexPath];
+        }
+
     }
     else {
-        cell = [self.delegate dropDown:self cellForElement:(VPPDropDownElement *) [self.elements objectAtIndex:iPath.row - 1] atGlobalIndexPath:globalIndexPath];
+        id <VPPDropDownDelegate> o = self.delegate;
+        if ([o respondsToSelector:@selector(dropDown:cellForElement:atGlobalIndexPath:)]) {
+            cell = [o dropDown:self cellForElement:(VPPDropDownElement *) [self.elements objectAtIndex:iPath.row - 1] atGlobalIndexPath:globalIndexPath];
+        }
     }
     
     // if user doesn't return a customized cell, we'll create a basic one
