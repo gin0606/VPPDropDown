@@ -28,24 +28,23 @@
 
 
 #import "VPPDropDown.h"
-#import "VPPDropDownElement.h"
 
 #define CUSTOM_DETAILED_LABEL_COLOR_R	56.0
 #define CUSTOM_DETAILED_LABEL_COLOR_G	84.0
 #define CUSTOM_DETAILED_LABEL_COLOR_B	135.0
 
 
+@interface VPPDropDown ()
+@property (nonatomic, readwrite) VPPDropDownType type;
+@property (nonatomic, readwrite, retain) NSArray *elements;
+@property (nonatomic, readwrite, copy) NSString *title;
+@property (nonatomic, readwrite, retain) NSIndexPath *indexPath;
+@property (nonatomic, readwrite, retain) UITableView *tableView;
+@property (nonatomic, readwrite, retain) id<VPPDropDownDelegate> delegate;
+@property (nonatomic, retain) NSIndexPath *globalRootIndexPath;
+@end
+
 @implementation VPPDropDown
-@synthesize delegate=_delegate;
-@synthesize type=_type;
-@synthesize elements=_elements;
-@synthesize title=_title;
-@synthesize indexPath=_rootIndexPath;
-@synthesize expanded=_expanded;
-@synthesize tableView=_tableView;
-@synthesize usesEntireSection;
-@synthesize object;
-@synthesize selectedIndex=_selectedIndex;
 
 
 /* a dictionary of tableviews (keys) and a dictionary of sections nsnumbered (values)
@@ -69,7 +68,7 @@ static NSMutableDictionary *dropDowns = nil;
                                    objectForKey:[NSNumber numberWithInt:indexPath.section]];   
     
    return [[dropDownsInSection filteredArrayUsingPredicate:
-            [NSPredicate predicateWithFormat:@"_globalRootIndexPath.row <= %d",indexPath.row]] 
+            [NSPredicate predicateWithFormat:@"self.globalRootIndexPath.row <= %d",indexPath.row]]
            lastObject];
 }
 
@@ -145,7 +144,7 @@ static NSMutableDictionary *dropDowns = nil;
 
 
 - (void) dispose {
-    if (_expanded) {
+    if (self.expanded) {
         int numberOfRows = self.numberOfRows * -1;
         [VPPDropDown addNumberOfRows:numberOfRows forSection:self.indexPath.section inTableView:self.tableView];
         _expanded = NO;
@@ -228,13 +227,13 @@ static NSMutableDictionary *dropDowns = nil;
                        delegate:(id<VPPDropDownDelegate>)delegate {
     
     if (self = [super init]) {
-        _title = [title retain];
-        _type = type;
-        _elements = [elements retain];
-        _delegate = [delegate retain];
-        _rootIndexPath = [indexPath retain];
-        _globalRootIndexPath = [indexPath retain];
-        _tableView = [tableView retain];
+        self.title = title;
+        self.type = type;
+        self.elements = elements;
+        self.delegate = delegate;
+        self.indexPath = indexPath;
+        self.globalRootIndexPath = indexPath;
+        self.tableView = tableView;
         
         [self addToDropDownsList];
     }
@@ -245,31 +244,13 @@ static NSMutableDictionary *dropDowns = nil;
 
 - (void) dealloc {
     self.object = nil;
-    if (_title != nil) {
-        [_title release];
-        _title = nil;
-    }    
-    if (_elements != nil) {
-        [_elements release];
-        _elements = nil;
-    }
-    if (_delegate != nil) {
-        [_delegate release];
-        _delegate = nil;
-    }
-    if (_rootIndexPath != nil) {
-        [_rootIndexPath release];
-        _rootIndexPath = nil;
-    }
-    if (_globalRootIndexPath != nil) {
-        [_globalRootIndexPath release];
-        _globalRootIndexPath = nil;
-    }
-    if (_tableView != nil) {
-        [_tableView release];
-        _tableView = nil;
-    }
-    
+    self.title = nil;
+    self.elements = nil;
+    self.delegate = nil;
+    self.indexPath = nil;
+    self.globalRootIndexPath = nil;
+    self.tableView = nil;
+
     [super dealloc];
 }
 
@@ -394,15 +375,15 @@ static NSMutableDictionary *dropDowns = nil;
 }
 
 - (NSIndexPath *) convertIndexPath:(NSIndexPath *)indexPath {
-    NSIndexPath *new = [NSIndexPath indexPathForRow:indexPath.row-_globalRootIndexPath.row inSection:_globalRootIndexPath.section];
+    NSIndexPath *new = [NSIndexPath indexPathForRow:indexPath.row-self.globalRootIndexPath.row inSection:self.globalRootIndexPath.section];
     
     return new;
 }
 
 
 - (BOOL) isRootCellAtIndexPath:(NSIndexPath *)indexPath {
-    return _globalRootIndexPath.section-indexPath.section == 0 
-    && _globalRootIndexPath.row-indexPath.row == 0;
+    return self.globalRootIndexPath.section-indexPath.section == 0
+    && self.globalRootIndexPath.row-indexPath.row == 0;
 }
 
 + (BOOL) tableView:(UITableView *)tableView isRootCellAtIndexPath:(NSIndexPath *)indexPath {
@@ -410,7 +391,7 @@ static NSMutableDictionary *dropDowns = nil;
                                    objectForKey:[NSNumber numberWithInt:indexPath.section]];
     
     dropdownsInSection = [dropdownsInSection filteredArrayUsingPredicate:
-                          [NSPredicate predicateWithFormat:@"_globalRootIndexPath.row == %d",indexPath.row]];
+                          [NSPredicate predicateWithFormat:@"self.globalRootIndexPath.row == %d",indexPath.row]];
     
     return [dropdownsInSection count] == 1;
 }
@@ -419,7 +400,7 @@ static NSMutableDictionary *dropDowns = nil;
 - (UITableViewCell *) disclosureCellForRowAtIndexPath:(NSIndexPath *)globalIndexPath  {
     static NSString *SelectionCellIdentifier = @"VPPDropDownDisclosureCell";
     
-    UITableViewCell *cell = [_tableView dequeueReusableCellWithIdentifier:SelectionCellIdentifier];
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:SelectionCellIdentifier];
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:SelectionCellIdentifier] autorelease];
     }
@@ -434,8 +415,8 @@ static NSMutableDictionary *dropDowns = nil;
     NSIndexPath *iPath = [self convertIndexPath:globalIndexPath];
     
     if (iPath.row == 0) {
-        cell.textLabel.text = _title;
-        if (_expanded) {
+        cell.textLabel.text = self.title;
+        if (self.expanded) {
             UIImageView *imView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"UITableContract"]];
             cell.accessoryView = imView;
             [imView release];
@@ -449,7 +430,7 @@ static NSMutableDictionary *dropDowns = nil;
         
     }
     else {
-        VPPDropDownElement *elt = (VPPDropDownElement*)[_elements objectAtIndex:iPath.row-1]; // -1 because options cells start in 1 (0 is root cell)
+        VPPDropDownElement *elt = (VPPDropDownElement *) [self.elements objectAtIndex:iPath.row - 1]; // -1 because options cells start in 1 (0 is root cell)
         cell.textLabel.text = elt.title;
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
@@ -460,7 +441,7 @@ static NSMutableDictionary *dropDowns = nil;
 - (UITableViewCell *) selectionCellForRowAtIndexPath:(NSIndexPath *)globalIndexPath  {
     static NSString *SelectionCellIdentifier = @"VPPDropDownSelectionCell";
     
-    UITableViewCell *cell = [_tableView dequeueReusableCellWithIdentifier:SelectionCellIdentifier];
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:SelectionCellIdentifier];
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:SelectionCellIdentifier] autorelease];
     }
@@ -475,15 +456,15 @@ static NSMutableDictionary *dropDowns = nil;
     NSIndexPath *iPath = [self convertIndexPath:globalIndexPath];
     
     if (iPath.row == 0) {
-        cell.textLabel.text = _title;
-        if (_expanded) {
+        cell.textLabel.text = self.title;
+        if (self.expanded) {
             UIImageView *imView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"UITableContract"]];
             cell.accessoryView = imView;
             [imView release];
             cell.textLabel.textColor = [VPPDropDown detailColor];
         }
         else {
-            cell.detailTextLabel.text = [(VPPDropDownElement*)[_elements objectAtIndex:_selectedIndex] title];            
+            cell.detailTextLabel.text = [(VPPDropDownElement *) [self.elements objectAtIndex:_selectedIndex] title];
             UIImageView *imView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"UITableExpand"]];
             cell.accessoryView = imView;
             [imView release];            
@@ -491,7 +472,7 @@ static NSMutableDictionary *dropDowns = nil;
         
     }
     else {
-        VPPDropDownElement *elt = (VPPDropDownElement*)[_elements objectAtIndex:iPath.row-1]; // -1 because options cells start in 1 (0 is root cell)
+        VPPDropDownElement *elt = (VPPDropDownElement *) [self.elements objectAtIndex:iPath.row - 1]; // -1 because options cells start in 1 (0 is root cell)
         cell.textLabel.text = elt.title;
         if (_selectedIndex == iPath.row-1) {
             cell.accessoryType = UITableViewCellAccessoryCheckmark;
@@ -508,11 +489,11 @@ static NSMutableDictionary *dropDowns = nil;
     
     UITableViewCell *cell = nil;
     if (iPath.row == 0) {
-        cell = [_delegate dropDown:self rootCellAtGlobalIndexPath:globalIndexPath];
+        cell = [self.delegate dropDown:self rootCellAtGlobalIndexPath:globalIndexPath];
         
     }
     else {
-        cell = [_delegate dropDown:self cellForElement:(VPPDropDownElement*)[_elements objectAtIndex:iPath.row-1] atGlobalIndexPath:globalIndexPath];
+        cell = [self.delegate dropDown:self cellForElement:(VPPDropDownElement *) [self.elements objectAtIndex:iPath.row - 1] atGlobalIndexPath:globalIndexPath];
     }
     
     // if user doesn't return a customized cell, we'll create a basic one
@@ -522,7 +503,7 @@ static NSMutableDictionary *dropDowns = nil;
     }
     
     if (iPath.row == 0) {
-        if (_expanded) {
+        if (self.expanded) {
             UIImageView *imView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"UITableContract"]];
             cell.accessoryView = imView;
             [imView release];
@@ -567,8 +548,8 @@ static NSMutableDictionary *dropDowns = nil;
 
 - (int) numberOfRows {
     int tmp = 0; // root cell is not counted
-    if (_expanded) {
-        tmp += [_elements count];
+    if (self.expanded) {
+        tmp += [self.elements count];
     }
     
     return tmp;
@@ -602,10 +583,10 @@ static NSMutableDictionary *dropDowns = nil;
 #pragma mark Table View Delegate
 
 - (void) toggleDropDown {
-    _expanded = !_expanded;
+    _expanded = !self.expanded;
 
     int rowsToAdd = [self.elements count];
-    if (!_expanded) {
+    if (!self.expanded) {
         rowsToAdd = -1 * rowsToAdd;
     }
     [VPPDropDown addNumberOfRows:rowsToAdd forSection:self.indexPath.section inTableView:self.tableView];
@@ -614,33 +595,33 @@ static NSMutableDictionary *dropDowns = nil;
     if (self.usesEntireSection) {
         // we can add or remove the cells as we manage the entire section
         NSMutableArray *indexPaths = [NSMutableArray array];
-        for (int i = 1; i <= [_elements count]; i++) {
-            NSIndexPath *ip = [NSIndexPath indexPathForRow:_rootIndexPath.row+i inSection:_rootIndexPath.section];
+        for (int i = 1; i <= [self.elements count]; i++) {
+            NSIndexPath *ip = [NSIndexPath indexPathForRow:self.indexPath.row+i inSection:self.indexPath.section];
             [indexPaths addObject:ip];
         }
         
-        if (_expanded) {
+        if (self.expanded) {
             // table view insert rows
-            [_tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
+            [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
         }
         
         else {
             // table view remove rows
-            [_tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];        
+            [self.tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
         }
         
-        [_tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:_rootIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+        [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:self.indexPath] withRowAnimation:UITableViewRowAnimationFade];
     }
 
     else {
         // as we dont manage the section, just refresh it, no additions or removals
-        NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:_rootIndexPath.section];
-        [_tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationFade];
+        NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:self.indexPath.section];
+        [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationFade];
     }
     
-    if (_expanded) {
+    if (self.expanded) {
         // scroll to last cell if needed
-        NSIndexPath *lastRow = [NSIndexPath indexPathForRow:_globalRootIndexPath.row+[_elements count] inSection:_globalRootIndexPath.section];
+        NSIndexPath *lastRow = [NSIndexPath indexPathForRow:self.globalRootIndexPath.row + [self.elements count] inSection:self.globalRootIndexPath.section];
         UITableViewCell *lastVisibleCell = [self.tableView.visibleCells lastObject];
         NSIndexPath *lastVisibleIndexPath = [self.tableView indexPathForCell:lastVisibleCell];
         // lets scroll if only half of the cells are visible
@@ -656,7 +637,7 @@ static NSMutableDictionary *dropDowns = nil;
     NSIndexPath *iPath = [self convertIndexPath:globalIndexPath];
     
     // delegate would do whatever it wants: change nspreference, ...
-    [_delegate dropDown:self elementSelected:[_elements objectAtIndex:iPath.row-1] atGlobalIndexPath:globalIndexPath];
+    [self.delegate dropDown:self elementSelected:[self.elements objectAtIndex:iPath.row - 1] atGlobalIndexPath:globalIndexPath];
 }
 
 - (void) selectionDidSelectRowAtIndexPath:(NSIndexPath *)globalIndexPath {
@@ -665,17 +646,17 @@ static NSMutableDictionary *dropDowns = nil;
     _selectedIndex = iPath.row - 1;
 
     NSMutableArray *reloadIndexPaths = [NSMutableArray array];
-    for (int i = 0; i <= [_elements count]; i++) {
-        NSIndexPath *path = [NSIndexPath indexPathForRow:_rootIndexPath.row + i
-                                               inSection:_rootIndexPath.section];
+    for (int i = 0; i <= [self.elements count]; i++) {
+        NSIndexPath *path = [NSIndexPath indexPathForRow:self.indexPath.row + i
+                                               inSection:self.indexPath.section];
         [reloadIndexPaths addObject:path];
     }
 
-    [_tableView reloadRowsAtIndexPaths:reloadIndexPaths withRowAnimation:UITableViewRowAnimationNone];
-    [_tableView reloadRowsAtIndexPaths:@[globalIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+    [self.tableView reloadRowsAtIndexPaths:reloadIndexPaths withRowAnimation:UITableViewRowAnimationNone];
+    [self.tableView reloadRowsAtIndexPaths:@[globalIndexPath] withRowAnimation:UITableViewRowAnimationFade];
 
     // delegate would do whatever it wants: change nspreference, ...
-    [_delegate dropDown:self elementSelected:[_elements objectAtIndex:_selectedIndex] atGlobalIndexPath:globalIndexPath];
+    [self.delegate dropDown:self elementSelected:[self.elements objectAtIndex:_selectedIndex] atGlobalIndexPath:globalIndexPath];
 }
 
 
@@ -738,7 +719,7 @@ static NSMutableDictionary *dropDowns = nil;
 #pragma mark Managing dropdown status
 
 - (void) setExpanded:(BOOL)expanded {
-    if (_expanded != expanded) {
+    if (self.expanded != expanded) {
         [self toggleDropDown];
     }
 }
@@ -758,11 +739,11 @@ static NSMutableDictionary *dropDowns = nil;
 #pragma mark - Deprecated methods
 
 - (BOOL) containsRelativeIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section != _rootIndexPath.section) {
+    if (indexPath.section != self.indexPath.section) {
         return NO;
     }
     
-    int tmp = indexPath.row - _rootIndexPath.row;
+    int tmp = indexPath.row - self.indexPath.row;
     return (tmp >= 0) && (tmp <= [self numberOfRows]);
 }
 
@@ -772,7 +753,7 @@ static NSMutableDictionary *dropDowns = nil;
         return nil;
     }
     
-    NSIndexPath *new = [NSIndexPath indexPathForRow:indexPath.row-_rootIndexPath.row inSection:_rootIndexPath.section];
+    NSIndexPath *new = [NSIndexPath indexPathForRow:indexPath.row-self.indexPath.row inSection:self.indexPath.section];
     
     return new;
 }
@@ -791,7 +772,7 @@ static NSMutableDictionary *dropDowns = nil;
 - (UITableViewCell *) disclosureCellForRowAtRelativeIndexPath:(NSIndexPath *)indexPath globalIndexPath:(NSIndexPath *)globalIndexPath  {
     static NSString *SelectionCellIdentifier = @"VPPDropDownDisclosureCell";
     
-    UITableViewCell *cell = [_tableView dequeueReusableCellWithIdentifier:SelectionCellIdentifier];
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:SelectionCellIdentifier];
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:SelectionCellIdentifier] autorelease];
     }
@@ -806,8 +787,8 @@ static NSMutableDictionary *dropDowns = nil;
     NSIndexPath *iPath = [self convertRelativeIndexPath:indexPath];
     
     if (iPath.row == 0) {
-        cell.textLabel.text = _title;
-        if (_expanded) {
+        cell.textLabel.text = self.title;
+        if (self.expanded) {
             UIImageView *imView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"UITableContract"]];
             cell.accessoryView = imView;
             [imView release];
@@ -821,7 +802,7 @@ static NSMutableDictionary *dropDowns = nil;
         
     }
     else {
-        VPPDropDownElement *elt = (VPPDropDownElement*)[_elements objectAtIndex:iPath.row-1]; // -1 because options cells start in 1 (0 is root cell)
+        VPPDropDownElement *elt = (VPPDropDownElement *) [self.elements objectAtIndex:iPath.row - 1]; // -1 because options cells start in 1 (0 is root cell)
         cell.textLabel.text = elt.title;
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
@@ -832,7 +813,7 @@ static NSMutableDictionary *dropDowns = nil;
 - (UITableViewCell *) selectionCellForRowAtRelativeIndexPath:(NSIndexPath *)indexPath globalIndexPath:(NSIndexPath *)globalIndexPath  {
     static NSString *SelectionCellIdentifier = @"VPPDropDownSelectionCell";
     
-    UITableViewCell *cell = [_tableView dequeueReusableCellWithIdentifier:SelectionCellIdentifier];
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:SelectionCellIdentifier];
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:SelectionCellIdentifier] autorelease];
     }
@@ -847,15 +828,15 @@ static NSMutableDictionary *dropDowns = nil;
     NSIndexPath *iPath = [self convertRelativeIndexPath:indexPath];
     
     if (iPath.row == 0) {
-        cell.textLabel.text = _title;
-        if (_expanded) {
+        cell.textLabel.text = self.title;
+        if (self.expanded) {
             UIImageView *imView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"UITableContract"]];
             cell.accessoryView = imView;
             [imView release];
             cell.textLabel.textColor = [VPPDropDown detailColor];
         }
         else {
-            cell.detailTextLabel.text = [(VPPDropDownElement*)[_elements objectAtIndex:_selectedIndex] title];            
+            cell.detailTextLabel.text = [(VPPDropDownElement *) [self.elements objectAtIndex:_selectedIndex] title];
             UIImageView *imView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"UITableExpand"]];
             cell.accessoryView = imView;
             [imView release];            
@@ -863,7 +844,7 @@ static NSMutableDictionary *dropDowns = nil;
         
     }
     else {
-        VPPDropDownElement *elt = (VPPDropDownElement*)[_elements objectAtIndex:iPath.row-1]; // -1 because options cells start in 1 (0 is root cell)
+        VPPDropDownElement *elt = (VPPDropDownElement *) [self.elements objectAtIndex:iPath.row - 1]; // -1 because options cells start in 1 (0 is root cell)
         cell.textLabel.text = elt.title;
         if (_selectedIndex == iPath.row-1) {
             cell.accessoryType = UITableViewCellAccessoryCheckmark;
@@ -880,11 +861,11 @@ static NSMutableDictionary *dropDowns = nil;
     
     UITableViewCell *cell = nil;
     if (iPath.row == 0) {
-        cell = [_delegate dropDown:self rootCellAtGlobalIndexPath:globalIndexPath];
+        cell = [self.delegate dropDown:self rootCellAtGlobalIndexPath:globalIndexPath];
         
     }
     else {
-        cell = [_delegate dropDown:self cellForElement:(VPPDropDownElement*)[_elements objectAtIndex:iPath.row-1] atGlobalIndexPath:globalIndexPath];
+        cell = [self.delegate dropDown:self cellForElement:(VPPDropDownElement *) [self.elements objectAtIndex:iPath.row - 1] atGlobalIndexPath:globalIndexPath];
     }
     
     // if user doesn't return a customized cell, we'll create a basic one
@@ -894,7 +875,7 @@ static NSMutableDictionary *dropDowns = nil;
     }
     
     if (iPath.row == 0) {
-        if (_expanded) {
+        if (self.expanded) {
             UIImageView *imView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"UITableContract"]];
             cell.accessoryView = imView;
             [imView release];
@@ -918,7 +899,7 @@ static NSMutableDictionary *dropDowns = nil;
         return nil;
     }
     
-    switch (_type) {
+    switch (self.type) {
         case VPPDropDownTypeDisclosure:
             return [self disclosureCellForRowAtRelativeIndexPath:indexPath globalIndexPath:globalIndexPath];
             
@@ -937,7 +918,7 @@ static NSMutableDictionary *dropDowns = nil;
     NSIndexPath *iPath = [self convertRelativeIndexPath:relativeIndexPath];
     
     // delegate would do whatever it wants: change nspreference, ...
-    [_delegate dropDown:self elementSelected:[_elements objectAtIndex:iPath.row-1] atGlobalIndexPath:globalIndexPath];
+    [self.delegate dropDown:self elementSelected:[self.elements objectAtIndex:iPath.row - 1] atGlobalIndexPath:globalIndexPath];
 }
 
 - (void) selectionDidSelectRowAtRelativeIndexPath:(NSIndexPath *)relativeIndexPath globalIndexPath:(NSIndexPath *)globalIndexPath {
@@ -947,10 +928,10 @@ static NSMutableDictionary *dropDowns = nil;
     _selectedIndex = iPath.row-1;
     
     // delegate would do whatever it wants: change nspreference, ...
-    [_delegate dropDown:self elementSelected:[_elements objectAtIndex:_selectedIndex] atGlobalIndexPath:globalIndexPath];
-    
-    [_tableView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:previousSelectedItem, _rootIndexPath, nil] withRowAnimation:UITableViewRowAnimationNone];
-    [_tableView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:globalIndexPath, nil] withRowAnimation:UITableViewRowAnimationFade];
+    [self.delegate dropDown:self elementSelected:[self.elements objectAtIndex:_selectedIndex] atGlobalIndexPath:globalIndexPath];
+
+    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:previousSelectedItem, self.indexPath, nil] withRowAnimation:UITableViewRowAnimationNone];
+    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:globalIndexPath, nil] withRowAnimation:UITableViewRowAnimationFade];
 }
 
 
@@ -964,14 +945,14 @@ static NSMutableDictionary *dropDowns = nil;
         }
         
         else {
-            switch (_type) {
+            switch (self.type) {
                 case VPPDropDownTypeCustom: // at this time, clicking on custom dropdown does the same thing than clicking on disclosure
                 case VPPDropDownTypeDisclosure:
                     [self disclosureDidSelectRowAtRelativeIndexPath:relativeIndexPath globalIndexPath:globalIndexPath];
                     break;
                 case VPPDropDownTypeSelection:
                     [self selectionDidSelectRowAtRelativeIndexPath:relativeIndexPath globalIndexPath:globalIndexPath];
-                    [_tableView deselectRowAtIndexPath:globalIndexPath animated:YES];
+                    [self.tableView deselectRowAtIndexPath:globalIndexPath animated:YES];
                     break;
             }
         }

@@ -84,16 +84,6 @@ typedef enum {
  */
 
 @interface VPPDropDown : NSObject {
-@private
-    VPPDropDownType _type;
-    NSArray *_elements;
-    NSString *_title;
-    id<VPPDropDownDelegate> _delegate;
-    UITableView *_tableView;
-    NSIndexPath *_rootIndexPath;
-    NSIndexPath *_globalRootIndexPath;
-    BOOL _expanded;
-    int _selectedIndex;
 }
 
 
@@ -118,19 +108,19 @@ typedef enum {
 @property (nonatomic, readonly) VPPDropDownType type;
 
 /**  VPPDropDownElement objects. They conform the dropdown's childs. */
-@property (nonatomic, readonly) NSArray *elements;
+@property (nonatomic, readonly, retain) NSArray *elements;
 
 /** The root cell's title. */
-@property (nonatomic, readonly) NSString *title;
+@property (nonatomic, readonly, copy) NSString *title;
 
 /** The root cell's indexPath. All childs will be placed after it. */
-@property (nonatomic, readonly) NSIndexPath *indexPath;
+@property (nonatomic, readonly, retain) NSIndexPath *indexPath;
 
 /** The tableView where the dropdown is. */
-@property (nonatomic, readonly) UITableView *tableView;
+@property (nonatomic, readonly, retain) UITableView *tableView;
 
 /** Holds a reference to the delegate */
-@property (nonatomic, readonly) id<VPPDropDownDelegate> delegate;
+@property (nonatomic, readonly, retain) id<VPPDropDownDelegate> delegate;
 
 /** Tells the dropdown if it is using the entire tableView's section.
  
@@ -284,7 +274,7 @@ returns NO. */
  numberOfRows will be the count of elements. */
 @property (nonatomic, readonly) int numberOfRows;
 
-    
+
 /** **Deprecated** Indicates if the given relativeIndexPath is contained and managed by the
  dropdown.
  
