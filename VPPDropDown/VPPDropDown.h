@@ -120,7 +120,7 @@ typedef enum {
 @property (nonatomic, readonly, retain) UITableView *tableView;
 
 /** Holds a reference to the delegate */
-@property (nonatomic, readonly, retain) id<VPPDropDownDelegate> delegate;
+@property (nonatomic, readonly, assign) id<VPPDropDownDelegate> delegate;
 
 /** Tells the dropdown if it is using the entire tableView's section.
  

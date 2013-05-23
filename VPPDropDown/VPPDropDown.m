@@ -40,7 +40,7 @@
 @property (nonatomic, readwrite, copy) NSString *title;
 @property (nonatomic, readwrite, retain) NSIndexPath *indexPath;
 @property (nonatomic, readwrite, retain) UITableView *tableView;
-@property (nonatomic, readwrite, retain) id<VPPDropDownDelegate> delegate;
+@property (nonatomic, readwrite, assign) id<VPPDropDownDelegate> delegate;
 @property (nonatomic, retain) NSIndexPath *globalRootIndexPath;
 @end
 
