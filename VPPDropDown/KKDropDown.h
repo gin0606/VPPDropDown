@@ -1,6 +1,6 @@
 //
-//  VPPDropDown.h
-//  VPPLibraries
+//  KKDropDown.h
+//  KKLibraries
 //
 //  Created by Víctor on 12/12/11.
 
@@ -31,29 +31,29 @@
 
 
 #import <Foundation/Foundation.h>
-#import "VPPDropDownDelegate.h"
+#import "KKDropDownDelegate.h"
 
 typedef enum {
-    VPPDropDownTypeDisclosure = 0, // childs of drop down cell are treated as disclosure cells 
-    VPPDropDownTypeSelection, // childs of drop down cell are treated as selection cells 
-    VPPDropDownTypeCustom // childs of drop down cell must be decorated by delegate
-} VPPDropDownType; 
+    KKDropDownTypeDisclosure = 0, // childs of drop down cell are treated as disclosure cells 
+    KKDropDownTypeSelection, // childs of drop down cell are treated as selection cells 
+    KKDropDownTypeCustom // childs of drop down cell must be decorated by delegate
+} KKDropDownType; 
 
 
 
 
 
 /** 
- VPPDropDown is a library that allows you to create dropdown-like menus in a 
+ KKDropDown is a library that allows you to create dropdown-like menus in a 
  table view, as seen in old Twitter 3 for iPhone. 
  
- You can create three kinds of dropdown menus (*VPPDropDownType*):
+ You can create three kinds of dropdown menus (*KKDropDownType*):
  
- - *VPPDropDownTypeDisclosure*, childs of drop down cell are treated as disclosure cells,
+ - *KKDropDownTypeDisclosure*, childs of drop down cell are treated as disclosure cells,
  useful for grouping detailed view controllers.
- - *VPPDropDownTypeSelection*, childs of drop down cell are treated as selection cells,
+ - *KKDropDownTypeSelection*, childs of drop down cell are treated as selection cells,
  useful for editing preferences.
- - *VPPDropDownTypeCustom*, childs of drop down cell should be decorated by the delegate.
+ - *KKDropDownTypeCustom*, childs of drop down cell should be decorated by the delegate.
  
  You can mix different dropdowns in the same or different section.
  
@@ -83,7 +83,7 @@ typedef enum {
  globalIndexPath have the same value.
  */
 
-@interface VPPDropDown : NSObject {
+@interface KKDropDown : NSObject {
 }
 
 
@@ -99,15 +99,15 @@ typedef enum {
  
  Type can be:
  
- - *VPPDropDownTypeDisclosure*, childs of drop down cell are treated as disclosure cells,
+ - *KKDropDownTypeDisclosure*, childs of drop down cell are treated as disclosure cells,
  useful for grouping detailed view controllers.
- - *VPPDropDownTypeSelection*, childs of drop down cell are treated as selection cells,
+ - *KKDropDownTypeSelection*, childs of drop down cell are treated as selection cells,
  useful for editing preferences.
- - *VPPDropDownTypeCustom*, childs of drop down cell should be decorated by the delegate.
+ - *KKDropDownTypeCustom*, childs of drop down cell should be decorated by the delegate.
  */
-@property (nonatomic, readonly) VPPDropDownType type;
+@property (nonatomic, readonly) KKDropDownType type;
 
-/**  VPPDropDownElement objects. They conform the dropdown's childs. */
+/**  KKDropDownElement objects. They conform the dropdown's childs. */
 @property (nonatomic, readonly, retain) NSArray *elements;
 
 /** The root cell's title. */
@@ -120,7 +120,7 @@ typedef enum {
 @property (nonatomic, readonly, retain) UITableView *tableView;
 
 /** Holds a reference to the delegate */
-@property (nonatomic, readonly, assign) id<VPPDropDownDelegate> delegate;
+@property (nonatomic, readonly, assign) id<KKDropDownDelegate> delegate;
 
 /** Tells the dropdown if it is using the entire tableView's section.
  
@@ -171,26 +171,26 @@ typedef enum {
  
  @param type Should be one of:
  
- - *VPPDropDownTypeDisclosure*, childs of drop down cell are treated as disclosure cells,
+ - *KKDropDownTypeDisclosure*, childs of drop down cell are treated as disclosure cells,
  useful for grouping detailed view controllers.
- - *VPPDropDownTypeSelection*, childs of drop down cell are treated as selection cells,
+ - *KKDropDownTypeSelection*, childs of drop down cell are treated as selection cells,
  useful for editing preferences.
- - *VPPDropDownTypeCustom*, childs of drop down cell should be decorated by the delegate.
+ - *KKDropDownTypeCustom*, childs of drop down cell should be decorated by the delegate.
  
  @param tableView The tableView where the dropdown will be placed.
  
  @param indexPath The tableView's indexPath where the dropdown will be placed.
  
- @param elements An array of VPPDropDownElement objects. They will conform the dropdown's childs.
+ @param elements An array of KKDropDownElement objects. They will conform the dropdown's childs.
  
  @param delegate A reference to the delegate.
  */ 
-- (VPPDropDown *) initWithTitle:(NSString *)title 
-                           type:(VPPDropDownType)type 
+- (KKDropDown *) initWithTitle:(NSString *)title 
+                           type:(KKDropDownType)type 
                       tableView:(UITableView *)tableView
                       indexPath:(NSIndexPath *)indexPath
                        elements:(NSArray *)elements 
-                       delegate:(id<VPPDropDownDelegate>)delegate;
+                       delegate:(id<KKDropDownDelegate>)delegate;
 
 
 /** Returns a newly initialized disclosure dropdown. 
@@ -206,10 +206,10 @@ typedef enum {
  @param firstObject, ... A comma-separated list of strings ending with `nil`. 
  It represents the titles of all dropdown's childs.
  */ 
-- (VPPDropDown *) initDisclosureWithTitle:(NSString *)title 
+- (KKDropDown *) initDisclosureWithTitle:(NSString *)title 
                                 tableView:(UITableView *)tableView
                                 indexPath:(NSIndexPath *)indexPath
-                                 delegate:(id<VPPDropDownDelegate>)delegate
+                                 delegate:(id<KKDropDownDelegate>)delegate
                             elementTitles:(NSString *)firstObject, ... NS_REQUIRES_NIL_TERMINATION;
 
 /** Returns a newly initialized selection dropdown. 
@@ -227,10 +227,10 @@ typedef enum {
  @param firstObject, ... A comma-separated list of strings ending with `nil`. 
  It represents the titles of all dropdown's childs.
  */ 
-- (VPPDropDown *) initSelectionWithTitle:(NSString *)title
+- (KKDropDown *) initSelectionWithTitle:(NSString *)title
                                tableView:(UITableView *)tableView
                                indexPath:(NSIndexPath *)indexPath
-                                delegate:(id<VPPDropDownDelegate>)delegate 
+                                delegate:(id<KKDropDownDelegate>)delegate 
                            selectedIndex:(int)selectedIndex
                            elementTitles:(NSString *)firstObject, ... NS_REQUIRES_NIL_TERMINATION;
 

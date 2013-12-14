@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>DF0A263B-B455-46C9-AE25-3CD4B2825A93</string>
+	<key>IDESourceControlProjectName</key>
+	<string>VPPDropDownExample</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>EC3C42B3-FC70-4831-AB6A-28E4B8B24C0A</key>
+		<string>ssh://github.com/kkgn06/VPPDropDown.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>VPPDropDownExample.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>EC3C42B3-FC70-4831-AB6A-28E4B8B24C0A</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>ssh://github.com/kkgn06/VPPDropDown.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>EC3C42B3-FC70-4831-AB6A-28E4B8B24C0A</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>EC3C42B3-FC70-4831-AB6A-28E4B8B24C0A</string>
+			<key>IDESourceControlWCCName</key>
+			<string>KKDropDown</string>
+		</dict>
+	</array>
+</dict>
+</plist>

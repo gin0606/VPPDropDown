@@ -1,6 +1,6 @@
 //
-//  VPPDropDownDelegate.h
-//  VPPLibraries
+//  KKDropDownDelegate.h
+//  KKLibraries
 //
 //  Created by Víctor on 12/12/11.
 
@@ -27,10 +27,10 @@
 
 
 #import <Foundation/Foundation.h>
-#import "VPPDropDownElement.h"
+#import "KKDropDownElement.h"
 
 
-@class VPPDropDown;
+@class KKDropDown;
 
 /** This protocol defines a set of methods to notify the delegate when:
  
@@ -38,7 +38,7 @@
  - dropdown needs delegate cell customization.
  - dropdown needs row's height.
  */
-@protocol VPPDropDownDelegate <NSObject>
+@protocol KKDropDownDelegate <NSObject>
 
 @required
 /** This method is called when any dropdown child is selected. This method 
@@ -48,7 +48,7 @@
  @param element the involved element.
  @param globalIndexPath the tableView's selected indexPath.
  */
-- (void) dropDown:(VPPDropDown *)dropDown elementSelected:(VPPDropDownElement *)element atGlobalIndexPath:(NSIndexPath *)globalIndexPath;
+- (void) dropDown:(KKDropDown *)dropDown elementSelected:(KKDropDownElement *)element atGlobalIndexPath:(NSIndexPath *)globalIndexPath;
 
 
 // implementation of these methods is required if you use a custom dropdown. 
@@ -61,7 +61,7 @@
  @return the customized cell. You can return `nil` if you don't want to 
  customize it. In that case, the dropdown will automatically do it for you.
  */
-- (UITableViewCell *) dropDown:(VPPDropDown *)dropDown rootCellAtGlobalIndexPath:(NSIndexPath *)globalIndexPath;
+- (UITableViewCell *) dropDown:(KKDropDown *)dropDown rootCellAtGlobalIndexPath:(NSIndexPath *)globalIndexPath;
 
 /** This method is called when the dropdown needs an element cell.
  @param dropDown the involved dropdown.
@@ -70,7 +70,7 @@
  @return the customized cell. You can return `nil` if you don't want to 
  customize it. In that case, the dropdown will automatically do it for you.
  */
-- (UITableViewCell *) dropDown:(VPPDropDown *)dropDown cellForElement:(VPPDropDownElement *)element atGlobalIndexPath:(NSIndexPath *)globalIndexPath;
+- (UITableViewCell *) dropDown:(KKDropDown *)dropDown cellForElement:(KKDropDownElement *)element atGlobalIndexPath:(NSIndexPath *)globalIndexPath;
 
 
 /** This method is called when the dropdown is asked about the row's height.
@@ -82,7 +82,7 @@
  If you do not implement this method, dropDown tableView's `rowHeight` property
  will be returned instead.
  */
-- (CGFloat) dropDown:(VPPDropDown *)dropDown heightForElement:(VPPDropDownElement *)element atIndexPath:(NSIndexPath *)indexPath;
+- (CGFloat) dropDown:(KKDropDown *)dropDown heightForElement:(KKDropDownElement *)element atIndexPath:(NSIndexPath *)indexPath;
 
 
 @end

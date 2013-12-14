@@ -1,6 +1,6 @@
 //
 //  DropDownExample.m
-//  VPPLibraries
+//  KKLibraries
 //
 //  Created by Víctor on 13/12/11.
 //  Copyright (c) 2011 Víctor Pena Placer. All rights reserved.
@@ -52,14 +52,14 @@ enum {
     self = [super initWithStyle:style];
     if (self) {
         // Custom initialization
-        _dropDownSelection = [[VPPDropDown alloc] initSelectionWithTitle:@"Selection Combo"
+        _dropDownSelection = [[KKDropDown alloc] initSelectionWithTitle:@"Selection Combo"
                                                               tableView:self.tableView
                                                               indexPath:[NSIndexPath indexPathForRow:kRowDropDownSelection inSection:kSection1] 
                                                                delegate:self 
                                                           selectedIndex:1
                                                           elementTitles:@"Option 1", @"Option 2", @"Option 3", nil];
 
-        _dropDownDisclosure = [[VPPDropDown alloc] initDisclosureWithTitle:@"Disclosure Combo"
+        _dropDownDisclosure = [[KKDropDown alloc] initDisclosureWithTitle:@"Disclosure Combo"
                                                                 tableView:self.tableView
                                                                 indexPath:[NSIndexPath indexPathForRow:kRowDropDownDisclosure inSection:kSection1] 
                                                                  delegate:self 
@@ -69,13 +69,13 @@ enum {
         NSMutableArray *elts = [NSMutableArray array];
         for (int i = 1; i <= 4; i++) {
             // just some mock elements
-            VPPDropDownElement *e = [[VPPDropDownElement alloc] initWithTitle:[NSString stringWithFormat:@"Element %d",i] andObject:[NSNumber numberWithInt:i]];
+            KKDropDownElement *e = [[KKDropDownElement alloc] initWithTitle:[NSString stringWithFormat:@"Element %d",i] andObject:[NSNumber numberWithInt:i]];
             [elts addObject:e];
             [e release];
         }
         
-        _dropDownCustom = [[VPPDropDown alloc] initWithTitle:@"Custom Combo" 
-                                                       type:VPPDropDownTypeCustom 
+        _dropDownCustom = [[KKDropDown alloc] initWithTitle:@"Custom Combo" 
+                                                       type:KKDropDownTypeCustom 
                                                   tableView:self.tableView 
                                                   indexPath:[NSIndexPath indexPathForRow:kRowDropDownCustom inSection:kSection2]
                                                    elements:elts 
@@ -86,14 +86,14 @@ enum {
                 @"item5", @"item6", @"item7", @"item8"
         ];
         NSUInteger resolutionRow = 1;
-        [[[VPPDropDown alloc] initSelectionWithTitle:self.section3ItemList[resolutionRow]
+        [[[KKDropDown alloc] initSelectionWithTitle:self.section3ItemList[resolutionRow]
                                            tableView:self.tableView
                                            indexPath:[NSIndexPath indexPathForRow:resolutionRow inSection:kSection3]
                                             delegate:self
                                        selectedIndex:1
                                        elementTitles:[NSString stringWithFormat:@"%@-1", self.section3ItemList[resolutionRow]], [NSString stringWithFormat:@"%@-2", self.section3ItemList[resolutionRow]], nil] autorelease];
         NSUInteger initializationRow = 5;
-        [[[VPPDropDown alloc] initDisclosureWithTitle:self.section3ItemList[initializationRow]
+        [[[KKDropDown alloc] initDisclosureWithTitle:self.section3ItemList[initializationRow]
                                             tableView:self.tableView
                                             indexPath:[NSIndexPath indexPathForRow:initializationRow inSection:kSection3]
                                              delegate:self
@@ -185,7 +185,7 @@ enum {
     switch (indexPath.section) {
         case kSection2:
             if (indexPath.row > 0) {
-                return [VPPDropDown tableView:tableView heightForRowAtIndexPath:indexPath];
+                return [KKDropDown tableView:tableView heightForRowAtIndexPath:indexPath];
             }
             
         default:
@@ -204,7 +204,7 @@ enum {
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    int rows = [VPPDropDown tableView:tableView numberOfExpandedRowsInSection:section];
+    int rows = [KKDropDown tableView:tableView numberOfExpandedRowsInSection:section];
     switch (section) {
         case kSection1:
             rows += kNumberOfRowsInSection1;
@@ -214,7 +214,7 @@ enum {
             break;
         case kSection3:
             return [self.section3ItemList count]
-                    + [VPPDropDown tableView:tableView numberOfExpandedRowsInSection:section];
+                    + [KKDropDown tableView:tableView numberOfExpandedRowsInSection:section];
     }
     return rows;
 }
@@ -232,12 +232,12 @@ enum {
     // Configure the cell...
     cell.textLabel.text = nil;
 
-    if ([VPPDropDown tableView:tableView dropdownsContainIndexPath:indexPath]) {
-        return [VPPDropDown tableView:tableView cellForRowAtIndexPath:indexPath];
+    if ([KKDropDown tableView:tableView dropdownsContainIndexPath:indexPath]) {
+        return [KKDropDown tableView:tableView cellForRowAtIndexPath:indexPath];
     }
     
     // first check if any dropdown contains the requested cell
-    int row = indexPath.row - [VPPDropDown tableView:tableView numberOfExpandedRowsInSection:indexPath.section];
+    int row = indexPath.row - [KKDropDown tableView:tableView numberOfExpandedRowsInSection:indexPath.section];
     switch (indexPath.section) {
         case kSection1:
             switch (row) {
@@ -254,7 +254,7 @@ enum {
             }
             break;
         case kSection3: {
-            NSUInteger r = (NSUInteger) (indexPath.row - [VPPDropDown tableView:tableView numberOfExpandedRowsInSection:indexPath.section aboveRow:indexPath.row]);
+            NSUInteger r = (NSUInteger) (indexPath.row - [KKDropDown tableView:tableView numberOfExpandedRowsInSection:indexPath.section aboveRow:indexPath.row]);
             cell.textLabel.text = [self.section3ItemList objectAtIndex:r];
             break;
         }
@@ -317,12 +317,12 @@ enum {
 
     
     // first check if any dropdown contains the requested cell
-    if ([VPPDropDown tableView:tableView dropdownsContainIndexPath:indexPath]) {
-        [VPPDropDown tableView:tableView didSelectRowAtIndexPath:indexPath];
+    if ([KKDropDown tableView:tableView dropdownsContainIndexPath:indexPath]) {
+        [KKDropDown tableView:tableView didSelectRowAtIndexPath:indexPath];
         return;
     }
     
-    int row = indexPath.row - [VPPDropDown tableView:tableView numberOfExpandedRowsInSection:indexPath.section];
+    int row = indexPath.row - [KKDropDown tableView:tableView numberOfExpandedRowsInSection:indexPath.section];
     UIAlertView *av;
     switch (indexPath.section) {
         case kSection1:
@@ -360,9 +360,9 @@ enum {
 }
 
 
-#pragma mark - VPPDropDownDelegate
+#pragma mark - KKDropDownDelegate
 
-- (void) dropDown:(VPPDropDown *)dropDown elementSelected:(VPPDropDownElement *)element atGlobalIndexPath:(NSIndexPath *)indexPath {
+- (void) dropDown:(KKDropDown *)dropDown elementSelected:(KKDropDownElement *)element atGlobalIndexPath:(NSIndexPath *)indexPath {
     if (dropDown == _dropDownDisclosure) {
         _ipToDeselect = [indexPath retain];
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Disclosure pressed" message:[NSString stringWithFormat:@"%@ has been pressed!",element.title] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
@@ -374,11 +374,11 @@ enum {
         [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
 }
-- (UITableViewCell *) dropDown:(VPPDropDown *)dropDown rootCellAtGlobalIndexPath:(NSIndexPath *)globalIndexPath {
+- (UITableViewCell *) dropDown:(KKDropDown *)dropDown rootCellAtGlobalIndexPath:(NSIndexPath *)globalIndexPath {
     
     return nil;
 }
-- (UITableViewCell *) dropDown:(VPPDropDown *)dropDown cellForElement:(VPPDropDownElement *)element atGlobalIndexPath:(NSIndexPath *)globalIndexPath {
+- (UITableViewCell *) dropDown:(KKDropDown *)dropDown cellForElement:(KKDropDownElement *)element atGlobalIndexPath:(NSIndexPath *)globalIndexPath {
     static NSString *cellIdentifier = @"CustomDropDownCell";
 
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
@@ -393,7 +393,7 @@ enum {
 }
 
 
-- (CGFloat) dropDown:(VPPDropDown *)dropDown heightForElement:(VPPDropDownElement *)element atIndexPath:(NSIndexPath *)indexPath {
+- (CGFloat) dropDown:(KKDropDown *)dropDown heightForElement:(KKDropDownElement *)element atIndexPath:(NSIndexPath *)indexPath {
     float height = dropDown.tableView.rowHeight;
     
     return height + indexPath.row * 10;

@@ -1,6 +1,6 @@
 //
-//  VPPDropDown.m
-//  VPPLibraries
+//  KKDropDown.m
+//  KKLibraries
 //
 //  Created by Víctor on 12/12/11.
 
@@ -27,24 +27,24 @@
 
 
 
-#import "VPPDropDown.h"
+#import "KKDropDown.h"
 
 #define CUSTOM_DETAILED_LABEL_COLOR_R	56.0
 #define CUSTOM_DETAILED_LABEL_COLOR_G	84.0
 #define CUSTOM_DETAILED_LABEL_COLOR_B	135.0
 
 
-@interface VPPDropDown ()
-@property (nonatomic, readwrite) VPPDropDownType type;
+@interface KKDropDown ()
+@property (nonatomic, readwrite) KKDropDownType type;
 @property (nonatomic, readwrite, retain) NSArray *elements;
 @property (nonatomic, readwrite, copy) NSString *title;
 @property (nonatomic, readwrite, retain) NSIndexPath *indexPath;
 @property (nonatomic, readwrite, retain) UITableView *tableView;
-@property (nonatomic, readwrite, assign) id<VPPDropDownDelegate> delegate;
+@property (nonatomic, readwrite, assign) id<KKDropDownDelegate> delegate;
 @property (nonatomic, retain) NSIndexPath *globalRootIndexPath;
 @end
 
-@implementation VPPDropDown
+@implementation KKDropDown
 
 
 /* a dictionary of tableviews (keys) and a dictionary of sections nsnumbered (values)
@@ -63,7 +63,7 @@ static NSMutableDictionary *dropDowns = nil;
 
 #pragma mark - Managing dropDowns collection
 
-+ (VPPDropDown *) tableView:(UITableView *)tableView dropdownForIndexPath:(NSIndexPath *)indexPath {
++ (KKDropDown *) tableView:(UITableView *)tableView dropdownForIndexPath:(NSIndexPath *)indexPath {
     NSArray *dropDownsInSection = [[dropDowns objectForKey:[NSNumber numberWithInt:[tableView hash]]] 
                                    objectForKey:[NSNumber numberWithInt:indexPath.section]];   
     
@@ -89,7 +89,7 @@ static NSMutableDictionary *dropDowns = nil;
         numberOfCells = numberOfCells * (-1);
     }
     for (int i = selfPosition+1; i < [dropDownsInSection count]; i++) {
-        VPPDropDown *selectedDD = (VPPDropDown *)[dropDownsInSection objectAtIndex:i];
+        KKDropDown *selectedDD = (KKDropDown *)[dropDownsInSection objectAtIndex:i];
         NSIndexPath *currentRelIP = selectedDD->_globalRootIndexPath;
         NSIndexPath *newRelIP = [NSIndexPath indexPathForRow:currentRelIP.row+numberOfCells inSection:currentRelIP.section];
         [selectedDD->_globalRootIndexPath release];
@@ -146,7 +146,7 @@ static NSMutableDictionary *dropDowns = nil;
 - (void) dispose {
     if (self.expanded) {
         int numberOfRows = self.numberOfRows * -1;
-        [VPPDropDown addNumberOfRows:numberOfRows forSection:self.indexPath.section inTableView:self.tableView];
+        [KKDropDown addNumberOfRows:numberOfRows forSection:self.indexPath.section inTableView:self.tableView];
         _expanded = NO;
         [self updateGlobalIndexPaths];
     }
@@ -175,7 +175,7 @@ static NSMutableDictionary *dropDowns = nil;
                                 [NSPredicate predicateWithFormat:@"indexPath.row == %d",self.indexPath.row]];
         
         if ([filteredDDs count] != 0) {
-            VPPDropDown *dd = [filteredDDs objectAtIndex:0];
+            KKDropDown *dd = [filteredDDs objectAtIndex:0];
             [dd dispose];
             
             // after removing the dd, let's update the list
@@ -219,12 +219,12 @@ static NSMutableDictionary *dropDowns = nil;
 #pragma mark -
 #pragma mark Constructors
 
-- (VPPDropDown *) initWithTitle:(NSString *)title 
-                           type:(VPPDropDownType)type
+- (KKDropDown *) initWithTitle:(NSString *)title 
+                           type:(KKDropDownType)type
                       tableView:(UITableView *)tableView
                       indexPath:(NSIndexPath *)indexPath
                        elements:(NSArray *)elements 
-                       delegate:(id<VPPDropDownDelegate>)delegate {
+                       delegate:(id<KKDropDownDelegate>)delegate {
     
     if (self = [super init]) {
         self.title = title;
@@ -255,19 +255,19 @@ static NSMutableDictionary *dropDowns = nil;
 }
 
 
-- (VPPDropDown *) initDisclosureWithTitle:(NSString *)title 
+- (KKDropDown *) initDisclosureWithTitle:(NSString *)title 
                                 tableView:(UITableView *)tableView
                                 indexPath:(NSIndexPath *)indexPath
-                                 delegate:(id<VPPDropDownDelegate>)delegate
+                                 delegate:(id<KKDropDownDelegate>)delegate
                             elementTitles:(NSString *)firstObject, ... {
     NSMutableArray *arr = [NSMutableArray array];
     
     NSString *eachObject;
     va_list argumentList;
-    VPPDropDownElement *element;
+    KKDropDownElement *element;
     if (firstObject) // The first argument isn't part of the varargs list,
     {                                   // so we'll handle it separately.
-        element = [[VPPDropDownElement alloc] init];
+        element = [[KKDropDownElement alloc] init];
         element.title = firstObject;
         element.object = nil;
         [arr addObject:element];
@@ -275,7 +275,7 @@ static NSMutableDictionary *dropDowns = nil;
         va_start(argumentList, firstObject); // Start scanning for arguments after firstObject.
         while ((eachObject = va_arg(argumentList, NSString *))) {// As many times as we can get an argument of type "NSString *"
             // that isn't nil, add it to self's contents.
-            element = [[VPPDropDownElement alloc] init];
+            element = [[KKDropDownElement alloc] init];
             element.title = eachObject;
             element.object = nil;
             [arr addObject:element];
@@ -284,23 +284,23 @@ static NSMutableDictionary *dropDowns = nil;
         va_end(argumentList);
     }
 
-    return [self initWithTitle:title type:VPPDropDownTypeDisclosure tableView:tableView indexPath:indexPath elements:arr delegate:delegate];
+    return [self initWithTitle:title type:KKDropDownTypeDisclosure tableView:tableView indexPath:indexPath elements:arr delegate:delegate];
 }
 
-- (VPPDropDown *) initSelectionWithTitle:(NSString *)title
+- (KKDropDown *) initSelectionWithTitle:(NSString *)title
                                tableView:(UITableView *)tableView
                                indexPath:(NSIndexPath *)indexPath
-                                delegate:(id<VPPDropDownDelegate>)delegate 
+                                delegate:(id<KKDropDownDelegate>)delegate 
                            selectedIndex:(int)selectedIndex
                            elementTitles:(NSString *)firstObject, ... {
     NSMutableArray *arr = [NSMutableArray array];
     
     NSString *eachObject;
     va_list argumentList;
-    VPPDropDownElement *element;
+    KKDropDownElement *element;
     if (firstObject) // The first argument isn't part of the varargs list,
     {                                   // so we'll handle it separately.
-        element = [[VPPDropDownElement alloc] init];
+        element = [[KKDropDownElement alloc] init];
         element.title = firstObject;
         element.object = nil;
         [arr addObject:element];
@@ -308,7 +308,7 @@ static NSMutableDictionary *dropDowns = nil;
         va_start(argumentList, firstObject); // Start scanning for arguments after firstObject.
         while ((eachObject = va_arg(argumentList, NSString *))) {// As many times as we can get an argument of type "NSString *"
             // that isn't nil, add it to self's contents.
-            element = [[VPPDropDownElement alloc] init];
+            element = [[KKDropDownElement alloc] init];
             element.title = eachObject;
             element.object = nil;
             [arr addObject:element];
@@ -317,7 +317,7 @@ static NSMutableDictionary *dropDowns = nil;
         va_end(argumentList);
     }
     
-    VPPDropDown *dd = [self initWithTitle:title type:VPPDropDownTypeSelection tableView:tableView indexPath:indexPath elements:arr delegate:delegate];
+    KKDropDown *dd = [self initWithTitle:title type:KKDropDownTypeSelection tableView:tableView indexPath:indexPath elements:arr delegate:delegate];
     dd->_selectedIndex = selectedIndex;
     
     return dd;
@@ -333,19 +333,19 @@ static NSMutableDictionary *dropDowns = nil;
         return NO;
     }
     
-    // pick VPPDropDown, that is show above indexPath.row.
+    // pick KKDropDown, that is show above indexPath.row.
     NSArray *filteredDDs = [dropDownsInSection filteredArrayUsingPredicate:
                             [NSPredicate predicateWithFormat:@"indexPath.section == %d && indexPath.row <= %d",
                              indexPath.section, indexPath.row]];
     
-    // if no VPPDropDown, this cell is not VPPDropDown.
+    // if no KKDropDown, this cell is not KKDropDown.
     if ([filteredDDs count] <= 0) {
         return NO;
     }
     
     NSUInteger numOfExpendedRow = 0;
-    VPPDropDown *prevDD = nil;
-    for (VPPDropDown *d in filteredDDs) {
+    KKDropDown *prevDD = nil;
+    for (KKDropDown *d in filteredDDs) {
         if (prevDD.isExpanded
             && prevDD.indexPath.row <= d.indexPath.row
             && d.indexPath.row <= prevDD.indexPath.row + prevDD.numberOfRows)
@@ -360,7 +360,7 @@ static NSMutableDictionary *dropDowns = nil;
         }
     }
     
-    VPPDropDown *closelyDd = prevDD;
+    KKDropDown *closelyDd = prevDD;
     
     NSInteger closelyDdExpandRow = closelyDd.isExpanded ? closelyDd.numberOfRows : 0;
     NSInteger ddDiff = numOfExpendedRow - closelyDdExpandRow;
@@ -398,7 +398,7 @@ static NSMutableDictionary *dropDowns = nil;
 
 
 - (UITableViewCell *) disclosureCellForRowAtIndexPath:(NSIndexPath *)globalIndexPath  {
-    static NSString *SelectionCellIdentifier = @"VPPDropDownDisclosureCell";
+    static NSString *SelectionCellIdentifier = @"KKDropDownDisclosureCell";
     
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:SelectionCellIdentifier];
     if (cell == nil) {
@@ -420,7 +420,7 @@ static NSMutableDictionary *dropDowns = nil;
             UIImageView *imView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"UITableContract"]];
             cell.accessoryView = imView;
             [imView release];
-            cell.textLabel.textColor = [VPPDropDown detailColor];
+            cell.textLabel.textColor = [KKDropDown detailColor];
         }
         else {
             UIImageView *imView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"UITableExpand"]];
@@ -430,7 +430,7 @@ static NSMutableDictionary *dropDowns = nil;
         
     }
     else {
-        VPPDropDownElement *elt = (VPPDropDownElement *) [self.elements objectAtIndex:iPath.row - 1]; // -1 because options cells start in 1 (0 is root cell)
+        KKDropDownElement *elt = (KKDropDownElement *) [self.elements objectAtIndex:iPath.row - 1]; // -1 because options cells start in 1 (0 is root cell)
         cell.textLabel.text = elt.title;
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
@@ -439,7 +439,7 @@ static NSMutableDictionary *dropDowns = nil;
 }
 
 - (UITableViewCell *) selectionCellForRowAtIndexPath:(NSIndexPath *)globalIndexPath  {
-    static NSString *SelectionCellIdentifier = @"VPPDropDownSelectionCell";
+    static NSString *SelectionCellIdentifier = @"KKDropDownSelectionCell";
     
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:SelectionCellIdentifier];
     if (cell == nil) {
@@ -461,10 +461,10 @@ static NSMutableDictionary *dropDowns = nil;
             UIImageView *imView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"UITableContract"]];
             cell.accessoryView = imView;
             [imView release];
-            cell.textLabel.textColor = [VPPDropDown detailColor];
+            cell.textLabel.textColor = [KKDropDown detailColor];
         }
         else {
-            cell.detailTextLabel.text = [(VPPDropDownElement *) [self.elements objectAtIndex:_selectedIndex] title];
+            cell.detailTextLabel.text = [(KKDropDownElement *) [self.elements objectAtIndex:_selectedIndex] title];
             UIImageView *imView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"UITableExpand"]];
             cell.accessoryView = imView;
             [imView release];            
@@ -472,11 +472,11 @@ static NSMutableDictionary *dropDowns = nil;
         
     }
     else {
-        VPPDropDownElement *elt = (VPPDropDownElement *) [self.elements objectAtIndex:iPath.row - 1]; // -1 because options cells start in 1 (0 is root cell)
+        KKDropDownElement *elt = (KKDropDownElement *) [self.elements objectAtIndex:iPath.row - 1]; // -1 because options cells start in 1 (0 is root cell)
         cell.textLabel.text = elt.title;
         if (_selectedIndex == iPath.row-1) {
             cell.accessoryType = UITableViewCellAccessoryCheckmark;
-            cell.textLabel.textColor = [VPPDropDown detailColor];
+            cell.textLabel.textColor = [KKDropDown detailColor];
         }
     }
     
@@ -489,16 +489,16 @@ static NSMutableDictionary *dropDowns = nil;
     
     UITableViewCell *cell = nil;
     if (iPath.row == 0) {
-        id <VPPDropDownDelegate> o = self.delegate;
+        id <KKDropDownDelegate> o = self.delegate;
         if ([o respondsToSelector:@selector(dropDown:rootCellAtGlobalIndexPath:)]) {
             cell = [o dropDown:self rootCellAtGlobalIndexPath:globalIndexPath];
         }
 
     }
     else {
-        id <VPPDropDownDelegate> o = self.delegate;
+        id <KKDropDownDelegate> o = self.delegate;
         if ([o respondsToSelector:@selector(dropDown:cellForElement:atGlobalIndexPath:)]) {
-            cell = [o dropDown:self cellForElement:(VPPDropDownElement *) [self.elements objectAtIndex:iPath.row - 1] atGlobalIndexPath:globalIndexPath];
+            cell = [o dropDown:self cellForElement:(KKDropDownElement *) [self.elements objectAtIndex:iPath.row - 1] atGlobalIndexPath:globalIndexPath];
         }
     }
     
@@ -544,7 +544,7 @@ static NSMutableDictionary *dropDowns = nil;
     NSArray *filteredDDs = [dropDownsInSection filteredArrayUsingPredicate:
                             [NSPredicate predicateWithFormat:@"indexPath.row < %d", row - 1]];
     NSUInteger numOfExpendedRow = 0;
-    for (VPPDropDown *d in filteredDDs) {
+    for (KKDropDown *d in filteredDDs) {
         if (d.isExpanded) {
             numOfExpendedRow += d.numberOfRows;
         }
@@ -563,20 +563,20 @@ static NSMutableDictionary *dropDowns = nil;
 
 
 + (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (![VPPDropDown tableView:tableView dropdownsContainIndexPath:indexPath]) {
-        NSLog(@"VPPDropDown - Receiving actions about an unknown cell");
+    if (![KKDropDown tableView:tableView dropdownsContainIndexPath:indexPath]) {
+        NSLog(@"KKDropDown - Receiving actions about an unknown cell");
         return nil;
     }
     
-    VPPDropDown *dd = [VPPDropDown tableView:tableView dropdownForIndexPath:indexPath];
+    KKDropDown *dd = [KKDropDown tableView:tableView dropdownForIndexPath:indexPath];
     switch (dd->_type) {
-        case VPPDropDownTypeDisclosure:
+        case KKDropDownTypeDisclosure:
             return [dd disclosureCellForRowAtIndexPath:indexPath];
             
-        case VPPDropDownTypeSelection:
+        case KKDropDownTypeSelection:
             return [dd selectionCellForRowAtIndexPath:indexPath];
             
-        case VPPDropDownTypeCustom:
+        case KKDropDownTypeCustom:
             return [dd customCellForRowAtIndexPath:indexPath];
     }
     
@@ -595,7 +595,7 @@ static NSMutableDictionary *dropDowns = nil;
     if (!self.expanded) {
         rowsToAdd = -1 * rowsToAdd;
     }
-    [VPPDropDown addNumberOfRows:rowsToAdd forSection:self.indexPath.section inTableView:self.tableView];
+    [KKDropDown addNumberOfRows:rowsToAdd forSection:self.indexPath.section inTableView:self.tableView];
     [self updateGlobalIndexPaths];
 
     if (self.usesEntireSection) {
@@ -670,8 +670,8 @@ static NSMutableDictionary *dropDowns = nil;
 
 
 + (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)globalIndexPath {
-    if ([VPPDropDown tableView:tableView dropdownsContainIndexPath:globalIndexPath]) {
-        VPPDropDown *dd = [VPPDropDown tableView:tableView dropdownForIndexPath:globalIndexPath];
+    if ([KKDropDown tableView:tableView dropdownsContainIndexPath:globalIndexPath]) {
+        KKDropDown *dd = [KKDropDown tableView:tableView dropdownForIndexPath:globalIndexPath];
         if ([dd convertIndexPath:globalIndexPath].row == 0) {
             // we are on root cell
             [dd toggleDropDown];
@@ -679,11 +679,11 @@ static NSMutableDictionary *dropDowns = nil;
         
         else {
             switch (dd->_type) {
-                case VPPDropDownTypeCustom: // at this time, clicking on custom dropdown does the same thing than clicking on disclosure
-                case VPPDropDownTypeDisclosure:
+                case KKDropDownTypeCustom: // at this time, clicking on custom dropdown does the same thing than clicking on disclosure
+                case KKDropDownTypeDisclosure:
                     [dd disclosureDidSelectRowAtIndexPath:globalIndexPath];
                     break;
-                case VPPDropDownTypeSelection:
+                case KKDropDownTypeSelection:
                     [dd selectionDidSelectRowAtIndexPath:globalIndexPath];
                     [tableView deselectRowAtIndexPath:globalIndexPath animated:YES];
                     break;
@@ -692,18 +692,18 @@ static NSMutableDictionary *dropDowns = nil;
     }
     
     else {
-        NSLog(@"VPPDropDown - Receiving actions about an unknown cell");
+        NSLog(@"KKDropDown - Receiving actions about an unknown cell");
     }
 }
 
 
 + (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if ([VPPDropDown tableView:tableView dropdownsContainIndexPath:indexPath]) {
-        VPPDropDown *dd = [VPPDropDown tableView:tableView dropdownForIndexPath:indexPath];
+    if ([KKDropDown tableView:tableView dropdownsContainIndexPath:indexPath]) {
+        KKDropDown *dd = [KKDropDown tableView:tableView dropdownForIndexPath:indexPath];
         NSIndexPath *iPath = [dd convertIndexPath:indexPath];
 
         if ([dd.delegate respondsToSelector:@selector(dropDown:heightForElement:atIndexPath:)]) {
-            VPPDropDownElement *element = nil;
+            KKDropDownElement *element = nil;
             if (iPath.row > 0) {
                 element = [dd.elements objectAtIndex:iPath.row-1];
             }
@@ -714,7 +714,7 @@ static NSMutableDictionary *dropDowns = nil;
         }
     }
     else {
-        NSLog(@"VPPDropDown - Receiving actions about an unknown cell");
+        NSLog(@"KKDropDown - Receiving actions about an unknown cell");
 
         return -1;
     }
@@ -776,7 +776,7 @@ static NSMutableDictionary *dropDowns = nil;
 }
 
 - (UITableViewCell *) disclosureCellForRowAtRelativeIndexPath:(NSIndexPath *)indexPath globalIndexPath:(NSIndexPath *)globalIndexPath  {
-    static NSString *SelectionCellIdentifier = @"VPPDropDownDisclosureCell";
+    static NSString *SelectionCellIdentifier = @"KKDropDownDisclosureCell";
     
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:SelectionCellIdentifier];
     if (cell == nil) {
@@ -798,7 +798,7 @@ static NSMutableDictionary *dropDowns = nil;
             UIImageView *imView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"UITableContract"]];
             cell.accessoryView = imView;
             [imView release];
-            cell.textLabel.textColor = [VPPDropDown detailColor];
+            cell.textLabel.textColor = [KKDropDown detailColor];
         }
         else {
             UIImageView *imView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"UITableExpand"]];
@@ -808,7 +808,7 @@ static NSMutableDictionary *dropDowns = nil;
         
     }
     else {
-        VPPDropDownElement *elt = (VPPDropDownElement *) [self.elements objectAtIndex:iPath.row - 1]; // -1 because options cells start in 1 (0 is root cell)
+        KKDropDownElement *elt = (KKDropDownElement *) [self.elements objectAtIndex:iPath.row - 1]; // -1 because options cells start in 1 (0 is root cell)
         cell.textLabel.text = elt.title;
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
@@ -817,7 +817,7 @@ static NSMutableDictionary *dropDowns = nil;
 }
 
 - (UITableViewCell *) selectionCellForRowAtRelativeIndexPath:(NSIndexPath *)indexPath globalIndexPath:(NSIndexPath *)globalIndexPath  {
-    static NSString *SelectionCellIdentifier = @"VPPDropDownSelectionCell";
+    static NSString *SelectionCellIdentifier = @"KKDropDownSelectionCell";
     
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:SelectionCellIdentifier];
     if (cell == nil) {
@@ -839,10 +839,10 @@ static NSMutableDictionary *dropDowns = nil;
             UIImageView *imView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"UITableContract"]];
             cell.accessoryView = imView;
             [imView release];
-            cell.textLabel.textColor = [VPPDropDown detailColor];
+            cell.textLabel.textColor = [KKDropDown detailColor];
         }
         else {
-            cell.detailTextLabel.text = [(VPPDropDownElement *) [self.elements objectAtIndex:_selectedIndex] title];
+            cell.detailTextLabel.text = [(KKDropDownElement *) [self.elements objectAtIndex:_selectedIndex] title];
             UIImageView *imView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"UITableExpand"]];
             cell.accessoryView = imView;
             [imView release];            
@@ -850,11 +850,11 @@ static NSMutableDictionary *dropDowns = nil;
         
     }
     else {
-        VPPDropDownElement *elt = (VPPDropDownElement *) [self.elements objectAtIndex:iPath.row - 1]; // -1 because options cells start in 1 (0 is root cell)
+        KKDropDownElement *elt = (KKDropDownElement *) [self.elements objectAtIndex:iPath.row - 1]; // -1 because options cells start in 1 (0 is root cell)
         cell.textLabel.text = elt.title;
         if (_selectedIndex == iPath.row-1) {
             cell.accessoryType = UITableViewCellAccessoryCheckmark;
-            cell.textLabel.textColor = [VPPDropDown detailColor];
+            cell.textLabel.textColor = [KKDropDown detailColor];
         }
     }
     
@@ -867,16 +867,16 @@ static NSMutableDictionary *dropDowns = nil;
     
     UITableViewCell *cell = nil;
     if (iPath.row == 0) {
-        id <VPPDropDownDelegate> o = self.delegate;
+        id <KKDropDownDelegate> o = self.delegate;
         if ([o respondsToSelector:@selector(dropDown:rootCellAtGlobalIndexPath:)]) {
             cell = [o dropDown:self rootCellAtGlobalIndexPath:globalIndexPath];
         }
 
     }
     else {
-        id <VPPDropDownDelegate> o = self.delegate;
+        id <KKDropDownDelegate> o = self.delegate;
         if ([o respondsToSelector:@selector(dropDown:cellForElement:atGlobalIndexPath:)]) {
-            cell = [o dropDown:self cellForElement:(VPPDropDownElement *) [self.elements objectAtIndex:iPath.row - 1] atGlobalIndexPath:globalIndexPath];
+            cell = [o dropDown:self cellForElement:(KKDropDownElement *) [self.elements objectAtIndex:iPath.row - 1] atGlobalIndexPath:globalIndexPath];
         }
     }
     
@@ -907,18 +907,18 @@ static NSMutableDictionary *dropDowns = nil;
 
 - (UITableViewCell *) cellForRowAtRelativeIndexPath:(NSIndexPath *)indexPath globalIndexPath:(NSIndexPath *)globalIndexPath  {
     if (![self containsRelativeIndexPath:indexPath]) {
-        NSLog(@"VPPDropDown - Receiving actions about an unknown cell");
+        NSLog(@"KKDropDown - Receiving actions about an unknown cell");
         return nil;
     }
     
     switch (self.type) {
-        case VPPDropDownTypeDisclosure:
+        case KKDropDownTypeDisclosure:
             return [self disclosureCellForRowAtRelativeIndexPath:indexPath globalIndexPath:globalIndexPath];
             
-        case VPPDropDownTypeSelection:
+        case KKDropDownTypeSelection:
             return [self selectionCellForRowAtRelativeIndexPath:indexPath globalIndexPath:globalIndexPath];
             
-        case VPPDropDownTypeCustom:
+        case KKDropDownTypeCustom:
             return [self customCellForRowAtRelativeIndexPath:indexPath globalIndexPath:globalIndexPath];
     }
     
@@ -958,11 +958,11 @@ static NSMutableDictionary *dropDowns = nil;
         
         else {
             switch (self.type) {
-                case VPPDropDownTypeCustom: // at this time, clicking on custom dropdown does the same thing than clicking on disclosure
-                case VPPDropDownTypeDisclosure:
+                case KKDropDownTypeCustom: // at this time, clicking on custom dropdown does the same thing than clicking on disclosure
+                case KKDropDownTypeDisclosure:
                     [self disclosureDidSelectRowAtRelativeIndexPath:relativeIndexPath globalIndexPath:globalIndexPath];
                     break;
-                case VPPDropDownTypeSelection:
+                case KKDropDownTypeSelection:
                     [self selectionDidSelectRowAtRelativeIndexPath:relativeIndexPath globalIndexPath:globalIndexPath];
                     [self.tableView deselectRowAtIndexPath:globalIndexPath animated:YES];
                     break;
@@ -971,7 +971,7 @@ static NSMutableDictionary *dropDowns = nil;
     }
     
     else {
-        NSLog(@"VPPDropDown - Receiving actions about an unknown cell");
+        NSLog(@"KKDropDown - Receiving actions about an unknown cell");
     }
 }
 

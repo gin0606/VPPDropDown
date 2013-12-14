@@ -1,6 +1,6 @@
 //
-//  VPPDropDownElement.m
-//  VPPLibraries
+//  KKDropDownElement.h
+//  KKLibraries
 //
 //  Created by Víctor on 12/12/11.
 
@@ -26,27 +26,47 @@
 //IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
-#import "VPPDropDownElement.h"
+#import <Foundation/Foundation.h>
 
-@implementation VPPDropDownElement
+/** This clase conforms a KKDropDown element. It is composed by a title and 
+ an object. The title will be the one shown in the associated cell. Using the
+ object is up to you.
+ 
+ You can use it to hold any information you may need. If you don't need it, 
+ you can set it to `nil`.
+ */
 
-@synthesize title;
-@synthesize object;
-
-- (VPPDropDownElement *) initWithTitle:(NSString *)ttitle andObject:(id)oobject {
-    if (self = [super init]) {
-        self.title = ttitle;
-        self.object = oobject;
-    }
-    
-    return self;
+@interface KKDropDownElement : NSObject {
+@private
+    NSString *title;
+    id object;
 }
 
-- (void) dealloc {
-    self.title = nil;
-    self.object = nil;
-    
-    [super dealloc];
-}
+/** ---
+ @name Element properties 
+ */
+
+/** Element title. 
+ 
+ This title will be the one shown in the associated cell. */
+@property (nonatomic, retain) NSString *title;
+
+/** The element object. 
+ 
+ Using the object is up to you.
+ 
+ You can use it to hold any information you may need. If you don't need it, 
+ you can set it to `nil`. */
+@property (nonatomic, retain) id object;
+
+
+/** ---
+ @name Constructor 
+ */
+
+/* Returns a newly initialized element with the given title and object.
+ 
+ `object` can be `nil` if you don't need it. */
+- (KKDropDownElement *) initWithTitle:(NSString *)title andObject:(id)object;
 
 @end

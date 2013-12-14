@@ -18,19 +18,19 @@
 		5721949514CF07C500C15760 /* UITableContract@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5721948C14CF07C500C15760 /* UITableContract@2x.png */; };
 		5721949614CF07C500C15760 /* UITableExpand.png in Resources */ = {isa = PBXBuildFile; fileRef = 5721948D14CF07C500C15760 /* UITableExpand.png */; };
 		5721949714CF07C500C15760 /* UITableExpand@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5721948E14CF07C500C15760 /* UITableExpand@2x.png */; };
-		5721949814CF07C500C15760 /* VPPDropDown.m in Sources */ = {isa = PBXBuildFile; fileRef = 5721949014CF07C500C15760 /* VPPDropDown.m */; };
-		5721949914CF07C500C15760 /* VPPDropDownElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 5721949314CF07C500C15760 /* VPPDropDownElement.m */; };
+		5721949814CF07C500C15760 /* KKDropDown.m in Sources */ = {isa = PBXBuildFile; fileRef = 5721949014CF07C500C15760 /* KKDropDown.m */; };
+		5721949914CF07C500C15760 /* KKDropDownElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 5721949314CF07C500C15760 /* KKDropDownElement.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		5721946B14CF04FE00C15760 /* VPPDropDownExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VPPDropDownExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5721946B14CF04FE00C15760 /* KKDropDownExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KKDropDownExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5721946F14CF04FE00C15760 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		5721947114CF04FE00C15760 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		5721947314CF04FE00C15760 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		5721947714CF04FF00C15760 /* VPPDropDownExample-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "VPPDropDownExample-Info.plist"; sourceTree = "<group>"; };
+		5721947714CF04FF00C15760 /* KKDropDownExample-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "KKDropDownExample-Info.plist"; sourceTree = "<group>"; };
 		5721947914CF04FF00C15760 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		5721947B14CF04FF00C15760 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		5721947D14CF04FF00C15760 /* VPPDropDownExample-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "VPPDropDownExample-Prefix.pch"; sourceTree = "<group>"; };
+		5721947D14CF04FF00C15760 /* KKDropDownExample-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "KKDropDownExample-Prefix.pch"; sourceTree = "<group>"; };
 		5721947E14CF04FF00C15760 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		5721947F14CF04FF00C15760 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		5721948614CF055100C15760 /* DropDownExample.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropDownExample.h; sourceTree = "<group>"; };
@@ -39,11 +39,11 @@
 		5721948C14CF07C500C15760 /* UITableContract@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "UITableContract@2x.png"; sourceTree = "<group>"; };
 		5721948D14CF07C500C15760 /* UITableExpand.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = UITableExpand.png; sourceTree = "<group>"; };
 		5721948E14CF07C500C15760 /* UITableExpand@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "UITableExpand@2x.png"; sourceTree = "<group>"; };
-		5721948F14CF07C500C15760 /* VPPDropDown.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPPDropDown.h; sourceTree = "<group>"; };
-		5721949014CF07C500C15760 /* VPPDropDown.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPPDropDown.m; sourceTree = "<group>"; };
-		5721949114CF07C500C15760 /* VPPDropDownDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPPDropDownDelegate.h; sourceTree = "<group>"; };
-		5721949214CF07C500C15760 /* VPPDropDownElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPPDropDownElement.h; sourceTree = "<group>"; };
-		5721949314CF07C500C15760 /* VPPDropDownElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPPDropDownElement.m; sourceTree = "<group>"; };
+		5721948F14CF07C500C15760 /* KKDropDown.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KKDropDown.h; sourceTree = "<group>"; };
+		5721949014CF07C500C15760 /* KKDropDown.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KKDropDown.m; sourceTree = "<group>"; };
+		5721949114CF07C500C15760 /* KKDropDownDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KKDropDownDelegate.h; sourceTree = "<group>"; };
+		5721949214CF07C500C15760 /* KKDropDownElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KKDropDownElement.h; sourceTree = "<group>"; };
+		5721949314CF07C500C15760 /* KKDropDownElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KKDropDownElement.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,7 +63,7 @@
 		5721946014CF04FE00C15760 = {
 			isa = PBXGroup;
 			children = (
-				5721947514CF04FF00C15760 /* VPPDropDownExample */,
+				5721947514CF04FF00C15760 /* KKDropDownExample */,
 				5721946E14CF04FE00C15760 /* Frameworks */,
 				5721946C14CF04FE00C15760 /* Products */,
 			);
@@ -72,7 +72,7 @@
 		5721946C14CF04FE00C15760 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				5721946B14CF04FE00C15760 /* VPPDropDownExample.app */,
+				5721946B14CF04FE00C15760 /* KKDropDownExample.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -87,7 +87,7 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		5721947514CF04FF00C15760 /* VPPDropDownExample */ = {
+		5721947514CF04FF00C15760 /* KKDropDownExample */ = {
 			isa = PBXGroup;
 			children = (
 				5721948914CF07C500C15760 /* Libraries */,
@@ -97,16 +97,17 @@
 				5721947F14CF04FF00C15760 /* AppDelegate.m */,
 				5721947614CF04FF00C15760 /* Supporting Files */,
 			);
+			name = KKDropDownExample;
 			path = VPPDropDownExample;
 			sourceTree = "<group>";
 		};
 		5721947614CF04FF00C15760 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				5721947714CF04FF00C15760 /* VPPDropDownExample-Info.plist */,
+				5721947714CF04FF00C15760 /* KKDropDownExample-Info.plist */,
 				5721947814CF04FF00C15760 /* InfoPlist.strings */,
 				5721947B14CF04FF00C15760 /* main.m */,
-				5721947D14CF04FF00C15760 /* VPPDropDownExample-Prefix.pch */,
+				5721947D14CF04FF00C15760 /* KKDropDownExample-Prefix.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -114,33 +115,34 @@
 		5721948914CF07C500C15760 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				5721948A14CF07C500C15760 /* VPPDropDown */,
+				5721948A14CF07C500C15760 /* KKDropDown */,
 			);
 			path = Libraries;
 			sourceTree = "<group>";
 		};
-		5721948A14CF07C500C15760 /* VPPDropDown */ = {
+		5721948A14CF07C500C15760 /* KKDropDown */ = {
 			isa = PBXGroup;
 			children = (
 				5721948B14CF07C500C15760 /* UITableContract.png */,
 				5721948C14CF07C500C15760 /* UITableContract@2x.png */,
 				5721948D14CF07C500C15760 /* UITableExpand.png */,
 				5721948E14CF07C500C15760 /* UITableExpand@2x.png */,
-				5721948F14CF07C500C15760 /* VPPDropDown.h */,
-				5721949014CF07C500C15760 /* VPPDropDown.m */,
-				5721949114CF07C500C15760 /* VPPDropDownDelegate.h */,
-				5721949214CF07C500C15760 /* VPPDropDownElement.h */,
-				5721949314CF07C500C15760 /* VPPDropDownElement.m */,
+				5721948F14CF07C500C15760 /* KKDropDown.h */,
+				5721949014CF07C500C15760 /* KKDropDown.m */,
+				5721949114CF07C500C15760 /* KKDropDownDelegate.h */,
+				5721949214CF07C500C15760 /* KKDropDownElement.h */,
+				5721949314CF07C500C15760 /* KKDropDownElement.m */,
 			);
+			name = KKDropDown;
 			path = VPPDropDown;
 			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		5721946A14CF04FE00C15760 /* VPPDropDownExample */ = {
+		5721946A14CF04FE00C15760 /* KKDropDownExample */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 5721948314CF04FF00C15760 /* Build configuration list for PBXNativeTarget "VPPDropDownExample" */;
+			buildConfigurationList = 5721948314CF04FF00C15760 /* Build configuration list for PBXNativeTarget "KKDropDownExample" */;
 			buildPhases = (
 				5721946714CF04FE00C15760 /* Sources */,
 				5721946814CF04FE00C15760 /* Frameworks */,
@@ -150,9 +152,9 @@
 			);
 			dependencies = (
 			);
-			name = VPPDropDownExample;
+			name = KKDropDownExample;
 			productName = VPPDropDown;
-			productReference = 5721946B14CF04FE00C15760 /* VPPDropDownExample.app */;
+			productReference = 5721946B14CF04FE00C15760 /* KKDropDownExample.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -163,7 +165,7 @@
 			attributes = {
 				LastUpgradeCheck = 0420;
 			};
-			buildConfigurationList = 5721946514CF04FE00C15760 /* Build configuration list for PBXProject "VPPDropDownExample" */;
+			buildConfigurationList = 5721946514CF04FE00C15760 /* Build configuration list for PBXProject "KKDropDownExample" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -175,7 +177,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				5721946A14CF04FE00C15760 /* VPPDropDownExample */,
+				5721946A14CF04FE00C15760 /* KKDropDownExample */,
 			);
 		};
 /* End PBXProject section */
@@ -203,8 +205,8 @@
 				5721947C14CF04FF00C15760 /* main.m in Sources */,
 				5721948014CF04FF00C15760 /* AppDelegate.m in Sources */,
 				5721948814CF055100C15760 /* DropDownExample.m in Sources */,
-				5721949814CF07C500C15760 /* VPPDropDown.m in Sources */,
-				5721949914CF07C500C15760 /* VPPDropDownElement.m in Sources */,
+				5721949814CF07C500C15760 /* KKDropDown.m in Sources */,
+				5721949914CF07C500C15760 /* KKDropDownElement.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -271,10 +273,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "VPPDropDownExample/VPPDropDownExample-Prefix.pch";
-				INFOPLIST_FILE = "VPPDropDownExample/VPPDropDownExample-Info.plist";
+				GCC_PREFIX_HEADER = "VPPDropDownExample/KKDropDownExample-Prefix.pch";
+				INFOPLIST_FILE = "VPPDropDownExample/KKDropDownExample-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
-				PRODUCT_NAME = VPPDropDownExample;
+				PRODUCT_NAME = KKDropDownExample;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -283,10 +285,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "VPPDropDownExample/VPPDropDownExample-Prefix.pch";
-				INFOPLIST_FILE = "VPPDropDownExample/VPPDropDownExample-Info.plist";
+				GCC_PREFIX_HEADER = "VPPDropDownExample/KKDropDownExample-Prefix.pch";
+				INFOPLIST_FILE = "VPPDropDownExample/KKDropDownExample-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
-				PRODUCT_NAME = VPPDropDownExample;
+				PRODUCT_NAME = KKDropDownExample;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -294,7 +296,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		5721946514CF04FE00C15760 /* Build configuration list for PBXProject "VPPDropDownExample" */ = {
+		5721946514CF04FE00C15760 /* Build configuration list for PBXProject "KKDropDownExample" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5721948114CF04FF00C15760 /* Debug */,
@@ -303,7 +305,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		5721948314CF04FF00C15760 /* Build configuration list for PBXNativeTarget "VPPDropDownExample" */ = {
+		5721948314CF04FF00C15760 /* Build configuration list for PBXNativeTarget "KKDropDownExample" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5721948414CF04FF00C15760 /* Debug */,
